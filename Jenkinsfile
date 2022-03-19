@@ -1,58 +1,23 @@
  pipeline {
  agent any
    environment {
-       registry = "tejprakashbkn/TestCICD"
+       registry = "git@github.com:tejprakashbkn/TestCICD"
        GOCACHE = "/tmp"
+       GIT_CRED_ID = "7b912c8e-dbda-4ec3-a58b-9d4b72826fd7"
    }
-   stages {
-       stage('Build') {
-           agent {
-               docker {
-                   image 'golang'
-               }
-           }
-           steps {
-               // Create our project directory.
-               sh 'cd ${GOPATH}/src'
-               sh 'mkdir -p ${GOPATH}/src/hello-world'
-               // Copy all files in our Jenkins workspace to our project directory.               
-               sh 'cp -r ${WORKSPACE}/* ${GOPATH}/src/hello-world'
-               // Build the app.
-               sh 'go build'              
-           }    
-       }
-       stage('Test') {
-           agent {
-               docker {
-                   image 'golang'
-               }
-           }
-           steps {                
-               // Create our project directory.
-               sh 'cd ${GOPATH}/src'
-               sh 'mkdir -p ${GOPATH}/src/hello-world'
-               // Copy all files in our Jenkins workspace to our project directory.               
-               sh 'cp -r ${WORKSPACE}/* ${GOPATH}/src/hello-world'
-               // Remove cached test results.
-               sh 'go clean -cache'
-               // Run Unit Tests.
-               sh 'go test ./... -v -short'           
-           }
-       }
-       stage('Publish') {
-           environment {
-               registryCredential = 'DockerHub'
-           }
-           steps{
-               script {
-                   def appimage = docker.build registry + ":$BUILD_NUMBER"
-                   docker.withRegistry( '', registryCredential ) {
-                       appimage.push()
-                       appimage.push('latest')
-                   }
-               }
-           }
-       }
-   }
-}
-
+  stages {
+        stage('Git Checkout') {
+            steps {
+                echo 'Checkout/Pull Code from Github'
+                step([$class: 'WsCleanup'])
+                checkout([
+	                $class: 'GitSCM', 
+	                branches: [[name: 'main']],  
+	                userRemoteConfigs: [[credentialsId: GIT_CRED_ID, url: REPO_URL]]
+	                ])
+	           sh "ls -l"
+                
+            }
+        }
+ }
+ }
