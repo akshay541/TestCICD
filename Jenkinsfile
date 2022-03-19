@@ -20,7 +20,7 @@
         }
         stage('Build') {
 		tools {
-        go 'go-1.11'
+        go 'Go_1.18'
     }
     environment {
         GO111MODULE = 'on'
