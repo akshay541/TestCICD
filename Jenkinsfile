@@ -32,9 +32,9 @@
                sh 'cp -r ${WORKSPACE}/* ${GOPATH}/src/hello-world'
                // Build the app.
 	       sh 'cd ${GOPATH}/src/hello-world'	   
-	       sh 'go mod init'
-	       sh 'go mod tidy'  
-               sh 'go build'
+	       sh '/usr/local/go/bin/go mod init'
+	       sh '/usr/local/go/bin/go mod tidy'  
+               sh '/usr/local/go/bin/go build'
            }
  }
  }
