@@ -19,18 +19,17 @@
             }
         }
         stage('Build') {
-           steps {
-               // Create our project directory.
-               sh 'cd ${GOPATH}/src'
-               sh 'mkdir -p ${GOPATH}/src/hello-world'
-               // Copy all files in our Jenkins workspace to our project directory.
-               sh 'cp -r ${WORKSPACE}/* ${GOPATH}/src/hello-world'
-               // Build the app.
-	       sh 'cd ${GOPATH}/src/hello-world'	   
-	       sh '/usr/local/go/bin/go mod init'
-	       sh '/usr/local/go/bin/go mod tidy'  
-               sh '/usr/local/go/bin/go build'
-           }
+		tools {
+        go 'go-1.11'
+    }
+    environment {
+        GO111MODULE = 'on'
+    }
+           
+            steps {
+                sh 'go build'
+            }
+        
  }
  }
  }
