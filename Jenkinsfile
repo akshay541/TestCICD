@@ -1,6 +1,5 @@
  
 pipeline {
-   agent any
    environment {
        registry = "tejprakashbkn/TestCICD"
        GOCACHE = "/tmp"
