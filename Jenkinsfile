@@ -1,5 +1,9 @@
  pipeline {
  	agent any
+	 environment {
+       registry = "magalixcorp/k8scicd"
+       GOCACHE = "/tmp"
+   }
   stages {
         stage('Git Checkout') {
             steps {
