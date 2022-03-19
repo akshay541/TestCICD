@@ -27,6 +27,7 @@
     }
            
             steps {
+		    sh 'go mod init'
                 sh 'go build'
             }
         
