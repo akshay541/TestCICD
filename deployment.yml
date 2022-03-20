@@ -23,7 +23,7 @@ spec:
         ports:
         - containerPort: 5000
       imagePullSecrets:
-      - name: cfcr  
+      - name: cfcr1  
 ---
 apiVersion: v1
 kind: Service
