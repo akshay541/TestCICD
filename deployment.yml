@@ -17,6 +17,8 @@ spec:
         version: blue
     spec:
       containers:
+      imagePullSecrets:
+      - name: cfcr
       - name: hello-node-container
         image: tejprakashbkn/node:BUILDNUMBER
         imagePullPolicy: Always
