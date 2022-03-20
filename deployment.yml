@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-name: hello
+  name: hello
 spec:
 strategy:
   type: Recreate
@@ -23,9 +23,9 @@ template:
 apiVersion: v1
 kind: Service
 metadata:
-name: hello
-labels:
-  app: hello
+  name: hello
+  labels:
+   app: hello
 spec:
 ports:
   - port: 5000
