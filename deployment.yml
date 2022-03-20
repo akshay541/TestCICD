@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello
+  name: hello-node
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello
+      app: hello-node-app
       version: blue
   template:
     metadata:
-      name: hello
+      name: hello-node-pod
       labels:
-        app: hello
-        version: hello
+        app: hello-node-app
+        version: blue
     spec:
       containers:
-      - name: hello
+      - name: hello-node-container
         image: tejprakashbkn/node:BUILDNUMBER
         imagePullPolicy: Always
         ports:
@@ -26,12 +26,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello
+  name: hello-node-svc
   labels:
-    app: hello
+    app: hello-node-app
 spec:
   selector:
-    app: hello
+    app: hello-node-app
     version: blue
   type: NodePort
   ports:
