@@ -7,33 +7,37 @@ pipeline {
         CREDENTIALS_ID = 'gke'
     }
     stages {
-        stage("Checkout code") {
-            steps {
-                checkout scm
-            }
-        }
+        stage('Checkout Source') {
+      steps {
+        git url:'https://github.com/tejprakashbkn/TestCICD.git', branch:'main'
+      }
+    }
         stage("Build image") {
             steps {
                 script {
-                    myapp = docker.build("DOCKER-HUB-USERNAME/hello:${env.BUILD_ID}")
+                    myapp = docker.build("tejprakashbkn/node:${env.BUILD_ID}")
                 }
             }
         }
         stage("Push image") {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DockerHub') {
                             myapp.push("latest")
                             myapp.push("${env.BUILD_ID}")
                     }
                 }
             }
         }        
-        stage('Deploy to GKE') {
-            steps{
-                sh "sed -i 's/hello:latest/hello:${env.BUILD_ID}/g' deployment.yaml"
-                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
-            }
+        stage('Deploy to App') {
+            steps {
+        script {
+          //kubernetesDeploy(configs: "hellowhale.yml", kubeconfigId: "mykubeconfig")
+          sh 'sed -i \'s/BUILDNUMBER/\'$BUILD_ID\'/g\' deployment.yml'
+          sh 'cat deployment.yml'
+          sh 'kubectl apply -f deployment.yml'
+        }
+      }
         }
     }    
 }
