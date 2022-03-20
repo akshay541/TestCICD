@@ -17,13 +17,13 @@ spec:
         version: blue
     spec:
       containers:
-      imagePullSecrets:
-      - name: cfcr
       - name: hello-node-container
         image: tejprakashbkn/node:BUILDNUMBER
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
+      imagePullSecrets:
+      - name: cfcr  
 ---
 apiVersion: v1
 kind: Service
